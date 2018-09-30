@@ -5,6 +5,7 @@ import argparse
 import re
 from bot import *
 
+
 class Client(object):
     RECV_BUFFER = 4096
 
@@ -23,7 +24,7 @@ class Client(object):
         if not self.bot:
             self.username = raw_input("Enter a username: ")
         else:
-            self.username = "adambot"
+            self.username = "oktaybot"
 
     def send_bot_message(self, data):
         message = self.bot.response(data)
@@ -43,7 +44,7 @@ class Client(object):
             print("Connection error")
             sys.exit()
         else:
-            print 'Connected to chatroom. Welcome! Try talking to the adambot, @adambot sentence'
+            print 'Connected to chatroom. Welcome! Try talking to the oktaybot, @oktaybot sentence'
             self.set_username()
             sys.stdout.write('%s > ' % self.username)
             sys.stdout.flush()
@@ -57,7 +58,7 @@ class Client(object):
                     if not data:
                         print("\n Disconnected from chat server.")
                         sys.exit()
-                    else: # recieve messages
+                    else:  # recieve messages
                         sys.stdout.write(data)
                         # check for bot message and reply instantly
                         if self.bot and bot_message(data):
@@ -65,7 +66,7 @@ class Client(object):
                         sys.stdout.flush()
                         sys.stdout.write('%s > ' % self.username)
                         sys.stdout.flush()
-                else: # sending messages
+                else:  # sending messages
                     self.send_message()
 
 
@@ -82,14 +83,17 @@ def validate_args(host, port):
         return False
     return True
 
+
 def bot_message(message):
-    if "@adambot" in message:
+    if "@oktaybot" in message:
         return True
     return False
+
 
 def load_intents():
     with open(INTENT_JSON) as json_data:
         return json.load(json_data)
+
 
 def loadbot():
     intents = load_intents()
@@ -102,7 +106,7 @@ def main():
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('host', metavar='host', nargs='+', help='host ip (ipv4 adress)')
     parser.add_argument('port', metavar='port', type=int, nargs='+', help='port number')
-    parser.add_argument('--bot', help='Makes this client an adambot', action='store_true')
+    parser.add_argument('--bot', help='Makes this client an oktaybot', action='store_true')
 
     args = parser.parse_args()
     host, port = args.host[0], args.port[0]

@@ -4,16 +4,17 @@ import socket
 import select
 import threading
 
-_HOST = '127.0.0.1' # localhost
+_HOST = '127.0.0.1'  # localhost
 _PORT = 10000
+
 
 class ChatServer(threading.Thread):
     """
     Defines the chat server as a thread
     """
     MAX_WAITING_CONNECTIONS = 10
-    RECV_BUFFER = 4096 # size of message
-    RECV_MSG_LEN = 4 # size of placeholder in bytes
+    RECV_BUFFER = 4096  # size of message
+    RECV_MSG_LEN = 4  # size of placeholder in bytes
 
     def __init__(self, host, port):
         """Initializes a new ChatServer.
@@ -88,7 +89,7 @@ class ChatServer(threading.Thread):
             client_socket (socket): sender socket
             client_message (string): message to broadcasted
         """
-        for socket in self.connections: # remove from list instead?
+        for socket in self.connections:  # remove from list instead?
             if socket != self.server_socket and socket != client_socket:
                 try:
                     socket.send(client_message)
@@ -120,15 +121,21 @@ class ChatServer(threading.Thread):
                         else:
                             self.connections.append(client_socket)
                             print "Client (%s, %s) connected" % client_address
-                            self._broadcast(client_socket, "\n[%s - %s] entered the chatroom\n" % client_address)
+                            self._broadcast(
+                                client_socket, "\n[%s - %s] entered the chatroom\n" % client_address
+                            )
                     else:
                         try:
                             data = socket.recv(self.RECV_BUFFER)
                             if data:
                                 print("Broadcasting data")
-                                self._broadcast(socket, "\r" + '<' + str(socket.getpeername()) + '> ' + data)
+                                self._broadcast(
+                                    socket, "\r" + '<' + str(socket.getpeername()) + '> ' + data
+                                )
                         except:
-                            self._broadcast(socket, "\n Client (%s, %s) is not reachable\n" % client_address)
+                            self._broadcast(
+                                socket, "\n Client (%s, %s) is not reachable\n" % client_address
+                            )
                             print("\n Client (%s, %s) is not reachable\n")
                             socket.close()
                             self.connections.remove(socket)
@@ -146,6 +153,7 @@ class ChatServer(threading.Thread):
         """
         self.running = False
         self.server_socket.close()
+
 
 def main():
     """
